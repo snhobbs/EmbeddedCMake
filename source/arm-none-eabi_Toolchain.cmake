@@ -1,4 +1,4 @@
-CMAKE_MINIMUM_REQUIRED (VERSION 2.6)
+CMAKE_MINIMUM_REQUIRED (VERSION 3.10.0)
 #include(CMakeForceCompiler)
 
 # CMake Options
@@ -21,7 +21,6 @@ SET(CMAKE_EXECUTABLE_LIBRARY_SUFFIX)
 set(CMAKE_C_IMPLICIT_LINK_DIRECTORIES)#THIS IS SUPER CRITICAL, KEEPS CMAKE FROM ADDING SYSTEM LIBRARIES
 SET(CMAKE_STATIC_LIBRARY_LINK_CXX_FLAGS)#here on spec
 SET(CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS)#Keeps CMake from adding rdynamic as a flag
-set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,--no-export-dynamic")#Also keeps CMake from adding rdynamic as a flag
 
 set(CMAKE_EXECUTABLE_SUFFIX .axf)
 set(TOOL_PREFIX arm-none-eabi)
@@ -29,30 +28,39 @@ set(TOOLCHAIN_EXT "")#no extension
 
 # Compilers like arm-none-eabi-gcc that target bare metal systems don't pass
 # CMake's compiler check, use the forcing functions and set explicitly
-function(SetupToolChain toolchain_directory)
+function(SetupGccToolChain toolchain_directory)
+    SET(GCC_ARM_LINKER ${toolchain_directory}/${TOOL_PREFIX}-ld${TOOLCHAIN_EXT})
     SET(CMAKE_C_COMPILER ${toolchain_directory}/${TOOL_PREFIX}-gcc${TOOLCHAIN_EXT} PARENT_SCOPE)
     SET(CMAKE_CXX_COMPILER ${toolchain_directory}/${TOOL_PREFIX}-g++${TOOLCHAIN_EXT} PARENT_SCOPE)
     SET(CMAKE_ASM_COMPILER ${toolchain_directory}/${TOOL_PREFIX}-gcc${TOOLCHAIN_EXT} PARENT_SCOPE)
-    SET(CMAKE_OBJCOPY ${toolchain_directory}/${TOOL_PREFIX}-objcopy CACHE INTERNAL "objcopy tool")
-    SET(CMAKE_OBJDUMP ${toolchain_directory}/${TOOL_PREFIX}-objdump CACHE INTERNAL "objdump tool")
-    set(CMAKE_C_COMPILER_WORKS TRUE PARENT_SCOPE)
-    set(CMAKE_CXX_COMPILER_WORKS TRUE PARENT_SCOPE)
-
-    set(CompilerFlags 
-        -mapcs#FIXME WHAT IS THIS
-        -fstrict-volatile-bitfields
-        -mfloat-abi=soft
-        PARENT_SCOPE
-    )
-
-    set(LinkerFlags
-        -Wl,-print-memory-usage 
-        PARENT_SCOPE
-    )
+    SET(CMAKE_OBJCOPY ${toolchain_directory}/${TOOL_PREFIX}-objcopy PARENT_SCOPE)
+    SET(CMAKE_OBJDUMP ${toolchain_directory}/${TOOL_PREFIX}-objdump PARENT_SCOPE)
+endfunction()
+   
+function(SetupClangToolChain toolchain_directory)
+    SET(GCC_ARM_LINKER ${toolchain_directory}/${TOOL_PREFIX}-ld${TOOLCHAIN_EXT})
+    SET(CMAKE_C_COMPILER clang-9 PARENT_SCOPE)
+    SET(CMAKE_CXX_COMPILER clang++-9 PARENT_SCOPE)
+    SET(CMAKE_ASM_COMPILER clang-9 PARENT_SCOPE)
+    SET(CMAKE_OBJCOPY llvm-objcopy-9 PARENT_SCOPE)
+    SET(CMAKE_OBJDUMP llvm-objdump-9 PARENT_SCOPE)
+    SET(CMAKE_LINKER ${GCC_ARM_LINKER} PARENT_SCOPE)
+    SET(CMAKE_C_LINKER ${GCC_ARM_LINKER} PARENT_SCOPE)
+    SET(CMAKE_CXX_LINKER ${GCC_ARM_LINKER} PARENT_SCOPE)
 endfunction()
 
-function(SetArmStartupFile VendorCodeBaseDirectory)
-    SetArmAssemblyStartupFile(${VendorCodeBaseDirectory})
-    set(ArmStartupFile ${ArmAssemblyStartupFile} PARENT_SCOPE)
+function(SetBuildFlags BUILD_TYPE)
+  if(${BUILD_TYPE} STREQUAL "MCUXPRESSO")
+    add_definitions(
+      -D__NEWLIB__
+      -D__MCUXPRESSO
+      -D__USE_CMSIS
+    )
+  elseif(${BUILD_TYPE} STREQUAL "CLANG")
+    add_definitions(
+      -D__XCC__
+    )
+  endif()
 endfunction()
+
 

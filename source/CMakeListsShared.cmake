@@ -53,111 +53,31 @@ endfunction()
 
 
 #------------------------------------------------
-#  Binary
-#------------------------------------------------
-function(MakeBinary directory target command)
-    set(axf ${target}.axf)
-    set(binary ${target}.bin)
-    add_custom_target(
-        ${binary}
-        ALL
-        DEPENDS ${target}
-        WORKING_DIRECTORY ${directory}
-    )
-    add_custom_command(
-        TARGET ${binary}
-        COMMENT "Exporting Binary: ${binary} from ${axf}"
-        WORKING_DIRECTORY ${directory}
-        BYPRODUCTS ${binary}
-        COMMAND ${command}
-        ARGS -O binary ${target}.axf ${binary}
-    )
-endfunction()
-#------------------------------------------------
-#  CppCheck
-#------------------------------------------------
-function(Cppcheck directory files command)
-    set(cppcheck_output ${directory}/cppcheck.txt)
-    add_custom_target(
-        cppcheck
-        ALL
-        WORKING_DIRECTORY ${directory}
-    )
-add_custom_command(
-        TARGET cppcheck
-        COMMENT "Running CppCheck, exporting to ${cppcheck_output}"
-        WORKING_DIRECTORY ${directory}
-        BYPRODUCTS ${cppcheck_output}
-        COMMAND ${command}
-        ARGS
-        #--enable=warning,performance,portability,information,missingInclude
-        --enable=all
-        #--check-config
-        --output-file=${cppcheck_output}
-        --force
-        --language=c++
-        --std=c++14
-        #--library=qt.cfg
-        #--template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-        --template="[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)"
-        --verbose
-        --quiet
-        ${files}
-    )
-endfunction()
-#------------------------------------------------
-#  CppLint
-#------------------------------------------------
-function(Cpplint directory files command)
-    set(cpplint_output ${directory}/cpplint.txt)
-    add_custom_target(
-        cpplint
-        ALL
-        WORKING_DIRECTORY ${directory}
-    )
-
-    add_custom_command(
-        TARGET cpplint
-        BYPRODUCTS ${cpplint_output}
-        COMMENT "Running CppLint, exporting to ${cpplint_output}"
-        WORKING_DIRECTORY ${directory}
-        COMMAND ${command}
-        ARGS
-        --linelength=250
-        --verbose=5
-        ${files}
-        2> ${cpplint_output}
-    )
-endfunction()
-
-#------------------------------------------------
 #  Testing
 #------------------------------------------------
-function(Tests directory test_directory target cortex_libs command)
-    set(test_output ${directory}/test_results.txt)
+function(Tests target directory binary_directory)
+  #enable_testing()
+    add_subdirectory(${directory} ${binary_directory})
+    set(test_output ${CMAKE_SOURCE_DIR}/test_results.txt)
     add_custom_target(
-        tests
+        Tests
         ALL
         DEPENDS ${target}
-        WORKING_DIRECTORY ${test_directory}
+        DEPENDS tests
+        WORKING_DIRECTORY ${directory}
     )
 
     add_custom_command(
-        TARGET tests
-        COMMENT "Running Tests in ${test_directory}, results in ${test_output}"
-        WORKING_DIRECTORY ${test_directory}
-        BYPRODUCTS ${test_directory}/Tests
-        BYPRODUCTS ${test_directory}/CMakeCache.txt
-        BYPRODUCTS ${test_directory}/Makefile
-        BYPRODUCTS ${test_directory}/cmake_install.cmake
-        BYPRODUCTS ${test_directory}/CMakeFiles/
+        TARGET Tests
+        COMMENT "Running Tests in ${directory}, results in ${test_output}"
+        WORKING_DIRECTORY ${directory}
+        BYPRODUCTS ${binary_directory}/tests.axf
+        BYPRODUCTS ${directory}/CMakeCache.txt
+        BYPRODUCTS ${directory}/Makefile
+        BYPRODUCTS ${directory}/cmake_install.cmake
+        BYPRODUCTS ${directory}/CMakeFiles/
         BYPRODUCTS ${test_output}
-        COMMAND CORTEXLIBS=${cortex_libs} ${command}
-        #COMMAND ${cmake_command}
-        ARGS ./
-        COMMAND make
-        ARGS all
-        COMMAND ./Tests 2>&1 > ${test_output}
+        COMMAND ${binary_directory}/tests.axf 2>&1 > ${test_output}
     )
 endfunction()
 

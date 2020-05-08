@@ -13,11 +13,11 @@ function(MakeBinary directory target command)
     )
     add_custom_command(
         TARGET "${target}.bin"
-        COMMENT "Exporting Binary: ${CMAKE_BINARY_DIR}/${target}.bin from ${directory}/${target}.axf"
+        COMMENT "Exporting Binary: ${CMAKE_CURRENT_BINARY_DIR}/${target}.bin from ${directory}/${target}.axf"
         WORKING_DIRECTORY ${directory}
-        BYPRODUCTS ${CMAKE_BINARY_DIR}/${target}.bin
+        BYPRODUCTS ${CMAKE_CURRENT_BINARY_DIR}/${target}.bin
         COMMAND ${command}
-        ARGS -O binary ${target}.axf ${CMAKE_BINARY_DIR}/${target}.bin
+        ARGS -O binary ${target}.axf ${CMAKE_CURRENT_BINARY_DIR}/${target}.bin
     )
 endfunction()
 

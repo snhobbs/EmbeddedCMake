@@ -1,3 +1,15 @@
-Makefile
-CMakeFiles
+*/docs/*
+*/docs
+__pycache__
+.pyc
+.metadata
+*Config.cmake
+*ConfigVersion.cmake
+
 CMakeCache.txt
+CMakeFiles/
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+/build/

@@ -71,7 +71,8 @@ endif()
 
 if(NOT DEFINED LINKER_MAP)
   set(LINKER_MAP "${CMAKE_BINARY_DIR}/${TargetName}_${BUILD_TYPE}.map")
-  message(WARNING "Linker map not set, using ${LINKER_MAP}")
+  # message(WARNING "Linker map not set, using ${LINKER_MAP}")
+  message(STATUS "Linker Map: ${LINKER_MAP}")
 endif()
 
 SetupToolchain(${BUILD_TYPE} ${VendorCodeBaseDirectory} ${toolchain_base})

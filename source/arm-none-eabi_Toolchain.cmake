@@ -48,19 +48,3 @@ function(SetupClangToolChain toolchain_directory)
     SET(CMAKE_C_LINKER ${GCC_ARM_LINKER} PARENT_SCOPE)
     SET(CMAKE_CXX_LINKER ${GCC_ARM_LINKER} PARENT_SCOPE)
 endfunction()
-
-function(SetBuildFlags BUILD_TYPE)
-  if(${BUILD_TYPE} STREQUAL "MCUXPRESSO")
-    add_definitions(
-      -D__NEWLIB__
-      -D__MCUXPRESSO
-      -D__USE_CMSIS
-    )
-  elseif(${BUILD_TYPE} STREQUAL "CLANG")
-    add_definitions(
-      -D__XCC__
-    )
-  endif()
-endfunction()
-
-

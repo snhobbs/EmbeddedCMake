@@ -61,7 +61,7 @@ endif()
 message(STATUS "Using BUILD_TYPE ${BUILD_TYPE}")
 
 if(NOT DEFINED LINKER_SCRIPT)
-  set(LINKER_SCRIPT ${CMAKE_BINARY_DIR}/${ChipName}_${LinkerScriptType}.ld)
+  set(LINKER_SCRIPT ${CMAKE_CURRENT_SOURCE_DIR}/${ChipName}_${LinkerScriptType}.ld)
   message(WARNING "Linker script not set, using ${LINKER_SCRIPT}")
 endif()
 
@@ -100,7 +100,7 @@ list(APPEND static_analysis_excludes ${CortexLibs_DIR})
 GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
 
 include(${EmbeddedCMake_DIR}/source/cppcheck.cmake)
-Cppcheck("${CMAKE_SOURCE_DIR}" "${AnalyseFiles}" ${CppcheckCommand})
+Cppcheck("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" ${CppcheckCommand})
 endif()
 
 #------------------------------------------------------------
@@ -109,7 +109,7 @@ endif()
 option(EXPORT_BINARY "Run CppCheck, CppLint, and Clang-tidy" ON)
 if(${EXPORT_BINARY})
   include(${EmbeddedCMake_DIR}/source/BinaryGenerator.cmake)
-MakeBinary("${CMAKE_SOURCE_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
+  MakeBinary("${CMAKE_CURRENT_SOURCE_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
 endif()
 
 #------------------------------------------------------------

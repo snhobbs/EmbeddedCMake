@@ -4,7 +4,7 @@
 function(Tests target directory binary_directory)
   #enable_testing()
     add_subdirectory(${directory} ${binary_directory})
-    set(test_output ${CMAKE_SOURCE_DIR}/test_results.txt)
+    set(test_output ${CMAKE_CURRENT_BINARY_DIR}/test_results.txt)
     add_custom_target(
         Tests
         ALL

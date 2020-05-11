@@ -19,8 +19,7 @@ function(Cpplint directory files command)
         ARGS
         --linelength=250
         --verbose=5
-        ${files}
-        ARGS 2>&1 > ${output}
+        ${files} 2>&1 | tee ${output}
     )
 endfunction()
 

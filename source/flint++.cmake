@@ -16,9 +16,8 @@ function(flint directory files command)
         COMMENT "Running ${target_name}, exporting to ${output}"
         WORKING_DIRECTORY ${directory}
         COMMAND "${command}"
-        OUTPUT_FILE ${output}
         ARGS
-        ${files}
+        ${files} 2>&1 | tee ${output}
     )
 endfunction()
 

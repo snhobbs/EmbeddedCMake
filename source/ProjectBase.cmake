@@ -101,12 +101,18 @@ GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
 
 include(${EmbeddedCMake_DIR}/source/cppcheck.cmake)
 Cppcheck("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" ${CppcheckCommand})
+
+include(${EmbeddedCMake_DIR}/source/cccc.cmake)
+cccc("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" cccc)
+
+include(${EmbeddedCMake_DIR}/source/flint++.cmake)
+flint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flint++)
 endif()
 
 #------------------------------------------------------------
 # Make AXF into plain binary
 #------------------------------------------------------------
-option(EXPORT_BINARY "Run CppCheck, CppLint, and Clang-tidy" ON)
+option(EXPORT_BINARY "Export binary from axf" ON)
 if(${EXPORT_BINARY})
   include(${EmbeddedCMake_DIR}/source/BinaryGenerator.cmake)
   MakeBinary("${CMAKE_CURRENT_SOURCE_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")

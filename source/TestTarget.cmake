@@ -23,7 +23,8 @@ function(Tests target directory binary_directory)
         BYPRODUCTS ${directory}/cmake_install.cmake
         BYPRODUCTS ${directory}/CMakeFiles/
         BYPRODUCTS ${test_output}
-        COMMAND ${binary_directory}/tests.axf 2>&1 > ${test_output}
+        OUTPUT_FILE ${output}
+        COMMAND ${binary_directory}/tests.axf 
     )
 endfunction()
 

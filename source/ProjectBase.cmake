@@ -92,12 +92,15 @@ SetTargetInclude("${TargetName}" "${TargetIncludes}")
 #------------------------------------------------------------
 option(RUN_ANALYSIS "Run CppCheck, CppLint, and Clang-tidy" ON)
 if(${RUN_ANALYSIS})
-set(CMAKE_CXX_CPPLINT "${CpplintCommand};--verbose=5;--linelength=100")
-set(CMAKE_CXX_CLANG_TIDY "${ClangtidyCommand};-checks=*")
+set(CMAKE_CXX_CPPLINT "${CpplintCommand};--verbose=1;--linelength=100")
+set(CMAKE_CXX_CLANG_TIDY "${ClangtidyCommand};-checks=*;-format-style=google;-export-fixes=${CMAKE_CURRENT_BINARY_DIR}/clangtidy.txt")
 
 list(APPEND static_analysis_excludes ${VendorDirectories})
 list(APPEND static_analysis_excludes ${CortexLibs_DIR})
 GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
+
+include(${EmbeddedCMake_DIR}/source/cpplint.cmake)
+Cpplint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" ${CpplintCommand})
 
 include(${EmbeddedCMake_DIR}/source/cppcheck.cmake)
 Cppcheck("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" ${CppcheckCommand})
@@ -107,6 +110,10 @@ cccc("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" cccc)
 
 include(${EmbeddedCMake_DIR}/source/flint++.cmake)
 flint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flint++)
+
+include(${EmbeddedCMake_DIR}/source/flawfinder.cmake)
+flawfinder("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flawfinder)
+
 endif()
 
 #------------------------------------------------------------

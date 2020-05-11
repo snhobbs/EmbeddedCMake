@@ -3,7 +3,7 @@
 #------------------------------------------------
 function(cccc directory files command)
     set(target_name cccc)
-    set(output ${directory}/${target_name}.txt)
+    set(output ${directory}/${target_name}.results)
     add_custom_target(
         ${target_name} 
         ALL

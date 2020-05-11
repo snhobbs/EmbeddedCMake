@@ -2,7 +2,7 @@
 #  CppLint
 #------------------------------------------------
 function(Cpplint directory files command)
-    set(cpplint_output ${directory}/cpplint.txt)
+    set(output ${directory}/cpplint.results)
     add_custom_target(
         cpplint
         ALL
@@ -11,15 +11,16 @@ function(Cpplint directory files command)
 
     add_custom_command(
         TARGET cpplint
-        BYPRODUCTS ${cpplint_output}
-        COMMENT "Running CppLint, exporting to ${cpplint_output}"
+        PRE_BUILD
+        BYPRODUCTS ${output}
+        COMMENT "Running CppLint, exporting to ${output}"
         WORKING_DIRECTORY ${directory}
-        COMMAND ${command}
+        COMMAND "${command}"
         ARGS
         --linelength=250
         --verbose=5
         ${files}
-        2> ${cpplint_output}
+        ARGS 2>&1 > ${output}
     )
 endfunction()
 

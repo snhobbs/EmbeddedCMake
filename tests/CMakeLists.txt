@@ -28,8 +28,6 @@ PRIVATE
 target_compile_options(
 tests
 PRIVATE
-    -g
-    -Os
     -Wall
     -Wextra
     -pedantic

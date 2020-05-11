@@ -70,7 +70,7 @@ if(NOT EXISTS ${LINKER_SCRIPT})
 endif()
 
 if(NOT DEFINED LINKER_MAP)
-  set(LINKER_MAP "${CMAKE_BINARY_DIR}/${TargetName}_${BUILD_TYPE}.map")
+  set(LINKER_MAP "${CMAKE_CURRENT_BINARY_DIR}/${TargetName}_${BUILD_TYPE}.map")
   # message(WARNING "Linker map not set, using ${LINKER_MAP}")
   message(STATUS "Linker Map: ${LINKER_MAP}")
 endif()
@@ -115,7 +115,7 @@ endif()
 option(EXPORT_BINARY "Export binary from axf" ON)
 if(${EXPORT_BINARY})
   include(${EmbeddedCMake_DIR}/source/BinaryGenerator.cmake)
-  MakeBinary("${CMAKE_CURRENT_SOURCE_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
+  MakeBinary("${CMAKE_CURRENT_BINARY_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
 endif()
 
 #------------------------------------------------------------

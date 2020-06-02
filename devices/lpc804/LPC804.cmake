@@ -4,15 +4,15 @@ set(CMAKE_CXX_COMPILER_TARGET ${Triple})
 set(CMAKE_ASM_COMPILER_TARGET ${Triple})
 
 function(SetArmCppStartupFile VendorCodeBaseDirectory)
-    set(ArmCppStartupFile ${VendorCodeBaseDirectory}/devices/LPC804/mcuxpresso/startup_lpc804.cpp PARENT_SCOPE)
+    set(ArmCppStartupFile ${VendorCodeBaseDirectory}/devices/LPC845/mcuxpresso/startup_lpc845.cpp PARENT_SCOPE)
 endfunction()
 
 function(SetArmAssemblyStartupFile VendorCodeBaseDirectory)
-    set(ArmAssemblyStartupFile ${VendorCodeBaseDirectory}/devices/LPC804/gcc/startup_LPC804.S PARENT_SCOPE)
+    set(ArmAssemblyStartupFile ${VendorCodeBaseDirectory}/gcc/startup_LPC845.S PARENT_SCOPE)
 endfunction()
 
 function(GetVendorDirectories device_directory)
-    set(sub_directories devices/LPC804 devices/LPC804/drivers CMSIS CMSIS/Include) 
+    set(sub_directories devices/LPC845 devices/LPC845/drivers CMSIS CMSIS/Include) 
     #list(APPEND devices/LPC845/gcc ${sub_directories})
     #list(APPEND devices/LPC845/mcuxpresso ${VendorCodeDirectories})
     set(vendor_directories)
@@ -79,8 +79,11 @@ target_compile_definitions(
     -DFSL_RTOS_BM 
     -DSDK_OS_BAREMETAL 
     -DSDK_DEBUGCONSOLE=0 
-    -DCPU_LPC804M101JHI33
-    -DCPU_LPC804
+    -DCPU_LPC845
+    -DCPU_LPC845M301JHI33
+    -DCPU_LPC845M301JHI33_cm0plus
+    #-DCPU_LPC845M301JHI48
+    #-DCPU_LPC845M301JBD48
 
     #-D__MCUXPRESSO 
     #-D__USE_CMSIS 
@@ -150,3 +153,4 @@ if("${CMAKE_C_COMPILER_ID}" STREQUAL "GNU")
 endif()
 
 endfunction()
+

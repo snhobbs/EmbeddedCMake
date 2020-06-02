@@ -128,6 +128,7 @@ endif()
 #------------------------------------------------------------
 # Run Tests
 #------------------------------------------------------------
+if(OFF)
 option(RUN_TESTS "Run tests" ON)
 if(${RUN_TESTS})
   include(${EmbeddedCMake_DIR}/source/TestTarget.cmake)
@@ -135,6 +136,7 @@ if(${RUN_TESTS})
     set(TestDirectory "${ProjectDirectory}/tests")
   endif()
   Tests(${TargetName} ${TestDirectory} ${TestDirectory})
+endif()
 endif()
 
 #--------------------------------------------------------------------------------------

@@ -20,6 +20,7 @@ Cppcheck("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" cppcheck)
 include(${EmbeddedCMake_DIR}/source/flint++.cmake)
 flint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flint++)
 
+message("Static analysis files ${AnalyseFiles}")
 include(${EmbeddedCMake_DIR}/source/flawfinder.cmake)
 flawfinder("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flawfinder)
 endfunction()

@@ -13,11 +13,10 @@ function(flawfinder directory files command)
     add_custom_command(
         TARGET ${target_name} 
         BYPRODUCTS ${output}
-        COMMENT "Running ${target_name}, exporting to ${output}"
+        COMMENT "Running ${target_name}, on ${files} exporting to ${output}"
         WORKING_DIRECTORY ${directory}
         COMMAND ${command}
-        ARGS
-        ${files} 2>&1 | tee ${output}
+        ARGS ${files} 2>&1 | tee ${output}
     )
 endfunction()
 

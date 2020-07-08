@@ -2,10 +2,6 @@
 # Set Project Defaults
 #------------------------------------------------------------------------------------------
 
-if(NOT DEFINED EmbeddedCMake_DIR)
-  set(EmbeddedCMake_DIR $ENV{HOME}/EmbeddedCMake)
-endif()
-
 if(NOT DEFINED toolchain_base)
   set(toolchain_base $ENV{HOME}/ToolChains)
 endif()
@@ -92,28 +88,12 @@ SetTargetInclude("${TargetName}" "${TargetIncludes}")
 #------------------------------------------------------------
 option(RUN_ANALYSIS "Run CppCheck, CppLint, and Clang-tidy" ON)
 if(${RUN_ANALYSIS})
-set(CMAKE_CXX_CPPLINT "${CpplintCommand};--verbose=1;--linelength=100")
-set(CMAKE_CXX_CLANG_TIDY "${ClangtidyCommand};-checks=*;-format-style=google;-export-fixes=${CMAKE_CURRENT_BINARY_DIR}/clangtidy.txt")
 
 list(APPEND static_analysis_excludes ${VendorDirectories})
 list(APPEND static_analysis_excludes ${CortexLibs_DIR})
 GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
-
-include(${EmbeddedCMake_DIR}/source/cpplint.cmake)
-Cpplint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" ${CpplintCommand})
-
-include(${EmbeddedCMake_DIR}/source/cppcheck.cmake)
-Cppcheck("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" ${CppcheckCommand})
-
-include(${EmbeddedCMake_DIR}/source/cccc.cmake)
-cccc("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" cccc)
-
-include(${EmbeddedCMake_DIR}/source/flint++.cmake)
-flint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flint++)
-
-include(${EmbeddedCMake_DIR}/source/flawfinder.cmake)
-flawfinder("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flawfinder)
-
+include(${EmbeddedCMake_DIR}/source/StaticAnalysis.cmake)
+StaticAnalysis("${AnalyseFiles}")
 endif()
 
 #------------------------------------------------------------
@@ -128,7 +108,6 @@ endif()
 #------------------------------------------------------------
 # Run Tests
 #------------------------------------------------------------
-if(OFF)
 option(RUN_TESTS "Run tests" ON)
 if(${RUN_TESTS})
   include(${EmbeddedCMake_DIR}/source/TestTarget.cmake)
@@ -136,7 +115,6 @@ if(${RUN_TESTS})
     set(TestDirectory "${ProjectDirectory}/tests")
   endif()
   Tests(${TargetName} ${TestDirectory} ${TestDirectory})
-endif()
 endif()
 
 #--------------------------------------------------------------------------------------

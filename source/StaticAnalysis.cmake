@@ -23,5 +23,16 @@ flint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flint++)
 message("Static analysis files ${AnalyseFiles}")
 include(${EmbeddedCMake_DIR}/source/flawfinder.cmake)
 flawfinder("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" flawfinder)
+
+
+include(${EmbeddedCMake_DIR}/source/cppclean.cmake)
+cppclean("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" cppclean)
+
+#include(${EmbeddedCMake_DIR}/source/oclint.cmake)
+#oclint("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" oclint)
+
+
+include(${EmbeddedCMake_DIR}/source/clangcheck.cmake)
+clangcheck("${CMAKE_CURRENT_SOURCE_DIR}" "${AnalyseFiles}" clang-check-9)
 endfunction()
 

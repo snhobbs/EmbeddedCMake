@@ -5,6 +5,7 @@ function(Tests target directory binary_directory)
   #enable_testing()
     add_subdirectory(${directory} ${binary_directory})
     set(test_output ${CMAKE_CURRENT_BINARY_DIR}/test_results.results)
+    if(OFF)
     add_custom_target(
         Tests
         ALL
@@ -26,5 +27,6 @@ function(Tests target directory binary_directory)
         OUTPUT_FILE ${output}
         COMMAND ${binary_directory}/tests.axf 
     )
+endif()
 endfunction()
 

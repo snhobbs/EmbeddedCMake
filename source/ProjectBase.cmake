@@ -100,7 +100,7 @@ endif()
 # Make AXF into plain binary
 #------------------------------------------------------------
 option(EXPORT_BINARY "Export binary from axf" ON)
-if(${EXPORT_BINARY})
+if(EXPORT_BINARY)
   include(${EmbeddedCMake_DIR}/source/BinaryGenerator.cmake)
   MakeBinary("${CMAKE_CURRENT_BINARY_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
 endif()
@@ -109,7 +109,7 @@ endif()
 # Run Tests
 #------------------------------------------------------------
 option(RUN_TESTS "Run tests" ON)
-if(${RUN_TESTS})
+if(RUN_TESTS)
   include(${EmbeddedCMake_DIR}/source/TestTarget.cmake)
   if(NOT DEFINED TestDirectory)
     set(TestDirectory "${ProjectDirectory}/tests")

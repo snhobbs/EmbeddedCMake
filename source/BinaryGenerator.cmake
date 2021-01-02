@@ -18,12 +18,13 @@ function(MakeBinary directory target command)
   add_custom_target(
     ${target}.bin
     ALL
-    DEPENDS "${source}"
+    DEPENDS ${source}
     WORKING_DIRECTORY ${directory}
     COMMENT "Exporting Binary: ${dest} from ${source}"
     BYPRODUCTS ${dest}
     COMMAND ${command} -O binary ${source} ${dest}
   )
+  add_dependencies(${target}.bin ${target})
 #add_custom_command(
 #    TARGET ${dest}
 #    WORKING_DIRECTORY ${directory}

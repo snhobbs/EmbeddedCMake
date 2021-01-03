@@ -22,7 +22,7 @@ endif()
 #------------------------------------------------------------
 # Add Project Sources
 #------------------------------------------------------------
-include(${EmbeddedCMake_DIR}/source/Utilities.cmake)
+include(${EmbeddedCMake_DIR}/source/CMakeStaticAnalysis/Utilities.cmake)
 foreach (directory ${ProjectSourceDirectories})
     AUX_SOURCE_DIRECTORY(${directory} SourceFiles)
 endforeach ()
@@ -92,7 +92,7 @@ if(${RUN_ANALYSIS})
 list(APPEND static_analysis_excludes ${VendorDirectories})
 list(APPEND static_analysis_excludes ${CortexLibs_DIR})
 GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
-include(${EmbeddedCMake_DIR}/source/StaticAnalysis.cmake)
+include(${EmbeddedCMake_DIR}/source/CMakeStaticAnalysis/StaticAnalysis.cmake)
 StaticAnalysis("${AnalyseFiles}")
 endif()
 

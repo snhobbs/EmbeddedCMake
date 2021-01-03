@@ -1,0 +1,3 @@
+[submodule "source/CMakeStaticAnalysis"]
+	path = source/CMakeStaticAnalysis
+	url = git@github.com:snhobbs/CMakeStaticAnalysis.git

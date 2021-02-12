@@ -86,36 +86,36 @@ SetTargetInclude("${TargetName}" "${TargetIncludes}")
 #------------------------------------------------------------
 # Static Analysis
 #------------------------------------------------------------
-option(RUN_ANALYSIS "Run CppCheck, CppLint, and Clang-tidy" ON)
-if(${RUN_ANALYSIS})
+#option(RUN_ANALYSIS "Run CppCheck, CppLint, and Clang-tidy" ON)
+#if(${RUN_ANALYSIS})
 
-list(APPEND static_analysis_excludes ${VendorDirectories})
-list(APPEND static_analysis_excludes ${CortexLibs_DIR})
-GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
-include(${EmbeddedCMake_DIR}/source/CMakeStaticAnalysis/StaticAnalysis.cmake)
-StaticAnalysis("${AnalyseFiles}")
-endif()
+#list(APPEND static_analysis_excludes ${VendorDirectories})
+#list(APPEND static_analysis_excludes ${CortexLibs_DIR})
+#GetStaticAnalysisFiles("${TargetName}" "${static_analysis_excludes}")
+#include(${EmbeddedCMake_DIR}/source/CMakeStaticAnalysis/StaticAnalysis.cmake)
+#StaticAnalysis("${AnalyseFiles}" "./")
+#endif()
 
 #------------------------------------------------------------
 # Make AXF into plain binary
 #------------------------------------------------------------
-option(EXPORT_BINARY "Export binary from axf" ON)
-if(EXPORT_BINARY)
-  include(${EmbeddedCMake_DIR}/source/BinaryGenerator.cmake)
-  MakeBinary("${CMAKE_CURRENT_BINARY_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
-endif()
+#option(EXPORT_BINARY "Export binary from axf" ON)
+#if(EXPORT_BINARY)
+#  include(${EmbeddedCMake_DIR}/source/BinaryGenerator.cmake)
+#  MakeBinary("${CMAKE_CURRENT_BINARY_DIR}" "${TargetName}" "${CMAKE_OBJCOPY}")
+#endif()
 
 #------------------------------------------------------------
 # Run Tests
 #------------------------------------------------------------
-option(RUN_TESTS "Run tests" ON)
-if(RUN_TESTS)
-  include(${EmbeddedCMake_DIR}/source/TestTarget.cmake)
-  if(NOT DEFINED TestDirectory)
-    set(TestDirectory "${ProjectDirectory}/tests")
-  endif()
-  Tests(${TargetName} ${TestDirectory} ${TestDirectory})
-endif()
+#option(RUN_TESTS "Run tests" ON)
+#if(RUN_TESTS)
+#  include(${EmbeddedCMake_DIR}/source/TestTarget.cmake)
+#  if(NOT DEFINED TestDirectory)
+#    set(TestDirectory "${ProjectDirectory}/tests")
+#  endif()
+#  Tests(${TargetName} ${TestDirectory} ${TestDirectory})
+#endif()
 
 #--------------------------------------------------------------------------------------
 

@@ -6,4 +6,4 @@
 
 # Compute paths
 get_filename_component(EMBEDDEDCMAKE_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
-set(EMBEDDEDCMAKE_INCLUDE_DIRS "@CONF_INCLUDE_DIRS@")
+set(EMBEDDEDCMAKE_INCLUDE_DIRS "/home/simon/Argus/ArgusMsds/cmake/EmbeddedCMake;/home/simon/Argus/ArgusMsds/cmake/EmbeddedCMake")
